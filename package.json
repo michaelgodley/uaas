@@ -23,6 +23,7 @@
     "helmet": "^2.1.1",
     "mongoose": "^4.5.4",
     "morgan": "^1.7.0",
+    "nconf": "^0.8.4",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
     "passport-google": "^0.3.0",

@@ -1,19 +1,18 @@
 const express = require('express');
-const log = require('./appconfig/logger').getLogger();
 const DB = require('./appconfig/db');
+const config = require('./env');
+const log = require('./appconfig/logger').getLogger();
 
-
-let db = new DB();
-const app = require('./appconfig/express')(db.db);
-
+// DB setup
+let db = new DB(config.db.name);
 
 // Express Setup
-//const app = express();
+const app = require('./appconfig/express')(db.db);
 
 //app.get('/v1', function(req, res) {
 //    res.send('Hello V1');
 //});
 	
-//app.listen(3000, function(){
-//    log.info({mod: 'app'}, 'Express server listening on  port 3000');
-//});
+app.listen(config.express.server.http.port, function(){
+    log.info({mod: 'app'}, `Express server listening on  port ${config.express.server.http.port}`);
+});

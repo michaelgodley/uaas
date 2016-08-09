@@ -2,12 +2,12 @@ const mongoose = require('mongoose');
 const log = require('./logger').getLogger();
 
 class DBConnection {
-    constructor(protocol = 'mongodb', host = 'localhost', port = 27017, dBName = 'theapp') {
-	this.dbProtocol = protocol;
-	this.dbHost = host;
+    constructor(name = 'app', host = 'localhost', port = 27017, protocol = 'mongodb') {
+	this.dBProtocol = protocol;
+	this.dBHost = host;
 	this.dBPort = port;
-	this.dBName = dBName;
-	this.dBConnURL = `${protocol}://${host}:${port}/${dBName}`;
+	this.dBName = name;
+	this.dBConnURL = `${protocol}://${host}:${port}/${name}`;
 	log.debug({mod: 'db'}, `MongoDB Connection ${this.dBConnURL}`);
 	this.dB = mongoose.connect(this.dBConnURL, (err) => {
 	    if (err) {

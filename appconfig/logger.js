@@ -1,22 +1,24 @@
 const bunyan = require('bunyan');
-const logConfig = require('../env/log.json');
+const fs = require('fs');
+const config = require('../env');
 
 module.exports = (function() {
     let log;
     function init() {
-	log = bunyan.createLogger({name: logConfig.name, 
-				   src: logConfig.src,
+	let logConfig = {};
+	log = bunyan.createLogger({name: config.log.logname, 
+				   src: config.log.src,
 				   streams: [
 				       {
-					   level: logConfig.stream.level,
+					   level: config.log.stream.level,
 					   stream: process.stdout
 				       },
 				       {
 					   type: 'rotating-file',
-					   path: logConfig.rotatingfile.path,
-					   period: logConfig.rotatingfile.period,
-					   count: logConfig.rotatingfile.count,
-					   level: logConfig.rotatingfile.level
+					   path: config.log.rotatingfile.path,
+					   period: config.log.rotatingfile.period,
+					   count: config.log.rotatingfile.count,
+					   level: config.log.rotatingfile.level
 				       }
 				   ],
 				   serializers: {
