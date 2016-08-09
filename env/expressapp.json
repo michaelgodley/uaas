@@ -1,0 +1,36 @@
+{
+    "express" : {
+	"viewengine" : "hbs",
+	"templates" : "./views/hbs",
+	"public" : "./public",
+	"session" : {
+	    "secret" : "lazydog",
+	    "cookie" : {
+		"maxage" : 300000
+	    },
+	    "store" : {
+		"ttl": 172800
+	    }
+	},
+	"jwttoken": {
+	    "secret" : "lazydog",
+	    "expiresinminutes" : 5,
+	    "algorithm" : "HS256",
+	    "issuer": "example.com",
+	    "audience": "example.com"
+	}, 
+	"server" : {
+	    "host": "localhost",
+	    "http" : {
+		"enable" : "true",
+		"port" : "8080"
+	    },
+	    "https" : {
+		"enable" : "false",
+		"port" : "8081",
+		"sslprivatekey" : "./keys/key.pem",
+		"sslcert" : "./keys/cert.pem"
+	    }
+	}
+    }
+}

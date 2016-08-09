@@ -1,0 +1,15 @@
+{
+    "log" : {
+	"logname" : "serverapp",
+	"src" : false,
+	"stream" : {
+	    "level": "trace"
+	},
+	"rotatingfile" : {
+	    "path" : "./logs/app.log",
+	    "period" : "1d",
+	    "count": 3,
+	    "level": "info"  
+	}
+    }
+}

@@ -1,0 +1,71 @@
+{
+    "defaultname" : "theApp",
+    "express" : {
+	"viewengine" : "hbs",
+	"templates" : "./views/hbs",
+	"publicDir" : "./public",
+	"session" : {
+	    "secret" : "lazydog",
+	    "cookie" : {
+		"maxAge" : 300000
+	    },
+	    "store" : {
+		"ttl": 172800
+	    }
+	},
+	"jwttoken": {
+	    "secret" : "lazydog",
+	    "expiresInMinutes" : 5,
+	    "algorithm" : "HS256",
+	    "issuer": "example.com",
+	    "audience": "example.com"
+	} 
+    },
+    "webserver" : {
+	"host": "localhost",
+	"http" : {
+	    "enable" : "true",
+	    "port" : "3000"
+	},
+	"https" : {
+	    "enable" : "false",
+	    "port" : "8081",
+	    "ssl_private_key" : "keys/key.pem",
+	    "ssl_cert" : "keys/cert.pem"
+	}
+    }, 
+    "passport" : {
+	"local" : {
+	    "usernameField" : "username",
+	    "passwordField" : "password",
+	    "session" : true,
+	    "passReqToCallback" : true
+	},
+	"token" : {
+	    "secretOrKey" : "lazydog",
+	    "issuer" : "example.com",
+	    "audience" : "example.com",
+	    "passReqToCallback" : false
+	},
+	"facebook" : {
+	    "clientId" : "501741806657882",
+	    "clientSecret" : "a7c4574195c4d7f569becbc5494d0ae4",
+	    "callbackURL" : "http://192.168.56.100:3000/auth/facebook/callback"
+	},
+	"twitter" : {
+	    "consumerKey" : "Tz4MhnZfg6wRpesEu8rvfazWh",
+	    "consumerSecret": "dAgPBoBQScYXdlUIuExGi5Yq9HD2tcAyRxzRXeOjfCn6eDaoNO",
+	    "callbackURL" : "http://192.168.56.100:3000/auth/twitter/callback"
+	},
+	"google" : {
+	    "clientId" : ""
+	}
+    },
+    "db" : {
+	"connectString" : "mongodb://localhost:27017/munster",
+	"dbProtocol" : "mongodb",
+	"dbHost" : "localhost",
+	"dbPort" : 27017,
+	"dbName" : "munster"
+    }
+}
