@@ -1,0 +1,19 @@
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "0VOpqicCieOXwlSPQPMTuj/uTm/6Q6c5L7mmaHLQpTyQD6tVLVAO5FfenWGkbJRGgrN9u90l/uHsx1wd7csZwVaijyiwEXvFbCWb9iqGguj8KWCaRv+oXlrE8BQL3pVUddqQGASswNNoxj8Zri3C07PnVhBlne9qlm0ilEks5J5SY2H3/ySOBz18t3r+8W5A4FBNBJzjZ9UNYZCeNsa+HX/Y+GJWBqwUJ/UMTgmMfVmqzG7ysC7scKrE301rZy5GbJIAn0csDBpRQrslFaCM5zPus2N69mxeCVdW3BWaOWdusc2W7zYYt07IS88E9h5R9feMqXQGIOCuYYgKbNwKV75/zf+3Rz5Q7rJTKKCfNx4fKzDS4b+TRik8pLQsxcYVMhqZwUCMjGIceOn4Kd4N1JeaIOZNRpp6gTFVm7WJGetykUjTrHP4klboOkFiRGUFagwJgbq3sJjg/C1gqw5G8OlBZvGU85wUWUHjw80cgmTDjiFrUXqY919Bv//lJmjrmHXoT+jxT/f7mVTLOislhdCNf2OKXbFh5gWjKDTi+QaOacdVZf+zPK4giU05vY7/j2TRBV5N6yNbZPZ0+C+7b0e3kxs41SHYuRg+qiUVYj4RgvryN1psSnUixPd9HsBAHklhSZyEBrumvg/VdN09bQ+qawzX3TAnxQoz0Fk38zY="
+
+addons:
+  coverity_scan:
+    project:
+      name: "michaelgodley/uaas"
+      description: "Build submitted via Travis CI"
+    notification_email: michaelgodley@gmail.com
+    build_command_prepend: ""
+    build_command:   ""
+    branch_pattern: coverity_scan
+    
+language: node_js
+node_js:
+  - "6"
