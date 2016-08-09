@@ -46,19 +46,6 @@
 	    "issuer" : "example.com",
 	    "audience" : "example.com",
 	    "passReqToCallback" : false
-	},
-	"facebook" : {
-	    "clientId" : "501741806657882",
-	    "clientSecret" : "a7c4574195c4d7f569becbc5494d0ae4",
-	    "callbackURL" : "http://192.168.56.100:3000/auth/facebook/callback"
-	},
-	"twitter" : {
-	    "consumerKey" : "Tz4MhnZfg6wRpesEu8rvfazWh",
-	    "consumerSecret": "dAgPBoBQScYXdlUIuExGi5Yq9HD2tcAyRxzRXeOjfCn6eDaoNO",
-	    "callbackURL" : "http://192.168.56.100:3000/auth/twitter/callback"
-	},
-	"google" : {
-	    "clientId" : ""
 	}
     },
     "db" : {
@@ -66,6 +53,6 @@
 	"dbProtocol" : "mongodb",
 	"dbHost" : "localhost",
 	"dbPort" : 27017,
-	"dbName" : "munster"
+	"dbName" : "app"
     }
 }
