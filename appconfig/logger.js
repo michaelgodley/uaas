@@ -28,14 +28,9 @@ module.exports = (function() {
 				  });
 	log.info({mod :'log'}, 'Log Created');
     }
-
-    return {
-	getLogger : function() {
-	    if(!log) {
-		init();
-	    }
-	    return log;
-	}	    
-    };
+    if(!log) {
+	init();
+    }
+    return log;    
 })();
 

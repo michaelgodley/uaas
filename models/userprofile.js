@@ -86,4 +86,17 @@ UserProfileSchema.methods.comparePassword = function(candidatePassword, next) {
     });
 };
 
+UserProfileSchema.methods.createToken = function() {
+    return jwt.sign({user: this.toJSON()},
+		    'lazydog',
+		    {
+			algorithm: 'HS256' ,
+			expiresInMinutes: 5,
+			issuer: 'example.com',
+			audience: 'example.com',
+			ignoreExpiration: false
+		    }
+		   );
+};
+
 module.exports = mongoose.model('UserProfile', UserProfileSchema);

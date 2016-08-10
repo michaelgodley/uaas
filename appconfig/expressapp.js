@@ -4,7 +4,7 @@ const reqLog = require('bunyan-request');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
 
-const log = require('./logger').getLogger(); 
+const log = require('./logger'); 
 const config = require('../env');
 
 module.exports = function(db) {

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const log = require('./logger').getLogger();
+const log = require('./logger');
 
 class DBConnection {
     constructor(name = 'app', host = 'localhost', port = 27017, protocol = 'mongodb') {
