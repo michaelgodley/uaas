@@ -66,7 +66,21 @@ nconf.defaults({ log :
 			     sslcert : './keys/cert.pem'
 			 }
 		     }
-		 }
+		 },
+		 passport : {
+		     local : {
+			 usernamefield : 'username',
+			 passwordfield : 'password',
+			 session : false,
+			 passreqtocallback : false
+		     },
+		     token : {
+			 secretorkey : 'lazydog',
+			 issuer : 'example.com',
+			 audience : 'example.com',
+			 passreqtocallback : false
+	}
+    }
 
 		 
 	       });
@@ -116,4 +130,18 @@ config.express.server.https.enable = nconf.get('express:server:https:enable');
 config.express.server.https.port = nconf.get('express:server:https:port');
 config.express.server.https.sslprivatekey = nconf.get('express:server:https:sslprivatekey');
 config.express.server.https.sslcert = nconf.get('express:server:https:sslcert');
+//passport
+config.passport = {};
+config.passport.local = {};
+config.passport.local.usernamefield
+config.passport.local.passwordfield
+config.passport.local.session
+config.passport.local.passreqtocallback
+config.passport.token = {};
+config.passport.token.secretorkey
+config.passport.token.issuer
+config.passport.token.audience
+config.passport.token.passreqtocallback
+
+
 
