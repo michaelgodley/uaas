@@ -2,7 +2,8 @@ const passport = require('passport'),
       LocalStrategy = require('passport-local').Strategy,
       JwtStrategy = require('passport-jwt').Strategy,
       ExtractJwt = require('passport-jwt').ExtractJwt,
-      UserProfile = require('../modelsuserprofile');
+      UserProfile = require('../models/userprofile'),
+      config = require('../env');
 
 // Strategies:
 // Local Strategy
@@ -30,11 +31,10 @@ const localLoginStrategy = new LocalStrategy(localOpts, function(username, passw
 		return next(null, false, { error: 'Your login details could not be verified'});
 	    }
 	});
-    });
-
-	      
+    });	      
 });
 
+/*
 const tokenOpts = {};
 tokenOpts.jwtFromRequest = ExtractJwt.fromAuthHeader();
 tokenOpts.secretOrKey = config.passport.token.secretorkey;
@@ -58,6 +58,7 @@ const tokenStrategy = new JwtStrategy(tokenOpts, function(payload, next) {
 	}
     });
 });
+*/
+//passport.use('token', tokenStrategy);
 
-passport.use('token', tokenStrategy);
-passport.use('local-login', localStrategy);
+passport.use('local-login', localLoginStrategy);

@@ -33,7 +33,7 @@ const UserProfileSchema = new Schema(
 	    type: String
 	},
 	resetPasswordExpires: {
-	    type: Date;
+	    type: Date
 	}
     },
     {

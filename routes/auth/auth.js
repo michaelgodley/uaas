@@ -1,22 +1,23 @@
 const express = require('express'),
+      authentication = require('../../controllers/authentication'),
       log = require('../../appconfig/logger');
 
-module.exports = function() {
-    log.trace({mod: 'routes'}, '/auth routes setup');
-    let router = express.Router();
-    router.route('/login').post((req,res) => {
-	res.send('Auth post route');
-    })
-	.get((req, res) => {
-	    res.send('Auth get Route');
-	});
+log.trace({mod: 'routes'}, '/auth routes setup');
+const router = express.Router();
+router.post('/login', authentication.login);
 
-    
-    router.route('/register').post((req, res) => {
+router.get('/login', (req, res, next) => {
+    log.trace({mod: 'auth'}, '/login get middleware');
+    next();
+});
 
-    });
-		 
-    return router
-}
+router.get('/login', (req, res) => {
+    log.trace({mod: 'auth'}, '/login get');
+    res.send('Auth get Route');
+});
 
+router.route('/register').post((req, res) => {
 
+});
+
+module.exports = router;
