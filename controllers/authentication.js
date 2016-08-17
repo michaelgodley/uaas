@@ -9,10 +9,10 @@ let authController = {
 
     },
 
-    login: (req, res, next) => {
+    loginabc: (req, res, next) => {
 	log.trace(`${req.method} ${req.url} route handler`);
 	passport.authenticate('local-login', function(err, user, info) {
-	    log.trace(`passport.authenticate callback for ${user}`);
+	    log.trace(`passport.authenticate callback for ${user} ${info} ${err}`);
 	    // If error pass back to middleware
 	    if(err) return next(err);
 	    // If no user redirect to login
@@ -30,13 +30,14 @@ let authController = {
     },
     
     
-    loginabc: (req, res) => {
+    login: (req, res) => {
 	log.trace({mod: 'authController'}, '/login post');
-	res.send('Auth post controller');
+	res.send('Login post success controller');
     },
 
     register: (req, res) => {
-	log.trace({mod: 'authController'}, '/login post');
+	log.trace({mod: 'authController'}, `${req.method} ${req.url}`);
+	res.json({method: `${req.method}`, req: `${req.url}`, status: 'successful'});
     }
     
 };

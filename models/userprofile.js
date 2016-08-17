@@ -6,15 +6,22 @@ const mongoose = require('mongoose'),
 // User Profile Schema
 const UserProfileSchema = new Schema(
     {
-	email : {
-	    type: String,
-	    lowercase: true,
-	    unique: true,
-	    required: true
-	},
-	password: {
-	    type: String,
-	    required: true
+	local : {
+	    username : {
+		type: String,
+		unique: true,
+		required: true
+	    },
+	    email : {
+		type: String,
+		lowercase: true,
+		unique: true,
+		required: false
+	    },
+	    password: {
+		type: String,
+		required: true
+	    },
 	},
 	profile: {
 	    firstName: {

@@ -11,6 +11,7 @@ nconf.argv()
 nconf.file('log', './env/log.json');
 nconf.file('db', './env/db.json');
 nconf.file('expressapp', './env/expressapp.json');
+nconf.file('passport', './env/passportapp.json');
 
 // Hard defaults
 nconf.defaults({ log :
@@ -79,11 +80,11 @@ nconf.defaults({ log :
 			 issuer : 'example.com',
 			 audience : 'example.com',
 			 passreqtocallback : false
-	}
-    }
-
+		     }
+		 }
 		 
 	       });
+
 nconf.set('log:rotatingfile:path', `./logs/${nconf.get('log:logname')}.log`);
 
 // logging
@@ -133,15 +134,15 @@ config.express.server.https.sslcert = nconf.get('express:server:https:sslcert');
 //passport
 config.passport = {};
 config.passport.local = {};
-config.passport.local.usernamefield
-config.passport.local.passwordfield
-config.passport.local.session
-config.passport.local.passreqtocallback
+config.passport.local.usernamefield = nconf.get('passport:local:usernamefield');
+config.passport.local.passwordfield = nconf.get('passport:local:passwordfield');
+config.passport.local.session = nconf.get('passport:local:session');
+config.passport.local.passreqtocallback = nconf.get('passport:local:passreqtocallback');
 config.passport.token = {};
-config.passport.token.secretorkey
-config.passport.token.issuer
-config.passport.token.audience
-config.passport.token.passreqtocallback
+config.passport.token.secretorkey = nconf.get('passport:token:secretorkey');
+config.passport.token.issuer = nconf.get('passport:token:issuer');
+config.passport.token.audience = nconf.get('passport:token:audience');
+config.passport.token.passreqtocallback = nconf.get('passport:token:passreqtocallback');
 
 
 

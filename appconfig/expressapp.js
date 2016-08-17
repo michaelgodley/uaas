@@ -1,11 +1,11 @@
-const express = require('express');
-const bunyan = require('bunyan');
-const reqLog = require('bunyan-request');
-const helmet = require('helmet');
-const bodyParser = require('body-parser');
-
-const log = require('./logger'); 
-const config = require('../env');
+const express = require('express'),
+      bunyan = require('bunyan'),
+      reqLog = require('bunyan-request'),
+      helmet = require('helmet'),
+      bodyParser = require('body-parser'),
+      passport = require('passport'),
+      log = require('./logger'),
+      config = require('../env');
 
 module.exports = function(db) {
     // Express Setup
@@ -28,6 +28,9 @@ module.exports = function(db) {
     // Parsers
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
+
+    // Enable Passport
+//    app.use(passport.initialize());
     
     // Enable CORS from client-side
     app.use(function(req, res, next) {

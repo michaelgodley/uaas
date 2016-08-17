@@ -1,14 +1,16 @@
 const express = require('express'),
       config = require('./env'),
       log = require('./appconfig/logger'),
-      passportConfig = require('./appconfig/passportapp'),
       DB = require('./appconfig/db');
 
+const passportConfig = require('./appconfig/passportapp');
 // DB setup
 let db = new DB(config.db.name);
 
 // Express Setup
 const app = require('./appconfig/expressapp')(db.db);
+
+
 
 app.get('/v1', function(req, res) {
     res.send('Hello V1');
