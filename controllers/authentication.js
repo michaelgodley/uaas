@@ -31,13 +31,13 @@ let authController = {
     
     
     login: (req, res) => {
-	log.trace({mod: 'authController'}, '/login post');
-	res.send('Login post success controller');
+	log.trace({mod: 'authController'}, `${req.method} ${req.url} ${req.user}`);
+	res.json({status : 'Login success', token: req.user.accessToken});
     },
 
     register: (req, res) => {
-	log.trace({mod: 'authController'}, `${req.method} ${req.url}`);
-	res.json({method: `${req.method}`, req: `${req.url}`, status: 'successful'});
+	log.trace({mod: 'authController'}, `${req.method} ${req.url} ${req.user}`);
+	res.json({method: `${req.method}`, url: `${req.url}`, status: 'successful', token: req.user.accessToken});
     }
     
 };

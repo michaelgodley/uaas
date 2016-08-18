@@ -10,7 +10,7 @@ nconf.argv()
 // JSON file config
 nconf.file('log', './env/log.json');
 nconf.file('db', './env/db.json');
-nconf.file('expressapp', './env/expressapp.json');
+nconf.file('express', './env/expressapp.json');
 nconf.file('passport', './env/passportapp.json');
 
 // Hard defaults
@@ -37,7 +37,7 @@ nconf.defaults({ log :
 		 express : {
 		     viewengine : 'hbs',
 		     templates : './views/hbs',
-		     public : './public',
+		     publicdir : './public',
 		     session : {
 			 secret : 'lazydog',
 			 cookie : {

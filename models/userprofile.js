@@ -1,7 +1,9 @@
 const mongoose = require('mongoose'),
       Schema = mongoose.Schema,
-      bcrypt = require('bcryptjs');
-//      log = require;
+      bcrypt = require('bcryptjs'),
+      jwt= require('jsonwebtoken'),
+      log = require('../appconfig/logger'),
+      config = require('../env');
 
 // User Profile Schema
 const UserProfileSchema = new Schema(
@@ -12,11 +14,9 @@ const UserProfileSchema = new Schema(
 		unique: true,
 		required: true
 	    },
-	    email : {
+	    emailAddr : {
 		type: String,
-		lowercase: true,
-		unique: true,
-		required: false
+		lowercase: true
 	    },
 	    password: {
 		type: String,
@@ -36,6 +36,9 @@ const UserProfileSchema = new Schema(
 	    enum: ['Member', 'Client', 'Owner', 'Admin'],
 	    default: 'Member'
 	},
+	accessToken: {
+	    type: String
+	},
 	resetPasswordToken: {
 	    type: String
 	},
@@ -48,62 +51,35 @@ const UserProfileSchema = new Schema(
     }
 );
 
-/*
-userSchema.pre('save', function(next) {
-    log.trace('userSchema.pre save');
-    // Check if modified
-    //if(!this.local.isModified('password')) {
-    //log.debug('Password Not Modified');
-    //return next();
-    //}
-    
-    //init encryption
-    var self = this;
-    log.debug('Password: %s', self.local.password);
-    bcrypt.genSalt(10, function(err, salt) {
-    if(err) { 
-        log.debug('Error generating salt: %s', err.message);
-	    return next(err);
-	    }
-	    // hash the password
-	    bcrypt.hash(self.local.password, salt, function(err, hash) {
-	        if(err) {
-		log.debug('Error hashing password: %s', err.message);
-		return next(err);
-		    }
-		        log.debug('password: %s; hash: %s ', self.local.password, hash); 
-			    //override cleartest with hash
-			        self.local.password = hash;
-				    next();
-				    });
-    });
-});
-*/
-
-UserProfileSchema.methods.hashPassword = function(password, next) {
-    return bcrypt.hashSync(password, bcrypt.genSaltSync(10), null);
+UserProfileSchema.methods.hashPassword = function(password) {
+    log.trace({mod: 'db'}, 'UserProfile.hashPassword');
+    this.local.password = bcrypt.hashSync(password, bcrypt.genSaltSync(10), null);
+    return; 
 };
 
-UserProfileSchema.methods.comparePassword = function(candidatePassword, next) {
-    log.trace('UserProfileSchema.comparePassword %s', candidatePassword);
+UserProfileSchema.methods.comparePassword = function(candidatePassword, cb) {
+    log.trace('UserProfileSchema.comparePassword');
     // Compare user entered password with encrypted one
-    bcrypt.compare(candidatePassword, this.local.password, function(err, isMatch) {
-	if(err) return next(err);
-	next(null, isMatch);
+    bcrypt.compare(candidatePassword, this.local.password, (err, isMatch) => { 
+	if (err) {
+	    return cb(err);
+	}
+	cb(null, isMatch);
     });
 };
 
 UserProfileSchema.methods.createToken = function() {
-    return jwt.sign({user: this.toJSON()},
-		    'lazydog',
-		    {
-			algorithm: 'HS256' ,
-			expiresInMinutes: 5,
-			issuer: 'example.com',
-			audience: 'example.com',
-			ignoreExpiration: false
-		    }
-		   );
+    this.accessToken =  jwt.sign({user: this.local.username,
+				  role: this.role
+				 },
+				 'lazydog',
+				 {
+				     algorithm: 'HS256' ,
+				     expiresIn: 5,
+				     issuer: 'example.com',
+				     audience: 'example.com'
+				 }
+				);
 };
 
 module.exports = mongoose.model('UserProfile', UserProfileSchema);

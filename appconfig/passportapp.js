@@ -8,71 +8,77 @@ const passport = require('passport'),
 
 // Strategies:
 // Local Strategy
-log.info({mod: 'passport'}, 'Setting Up Passport');
+log.trace({mod: 'passport'}, 'Setting Up Passport Strategies');
 const localOpts = {};
 localOpts.usernameField =  config.passport.local.usernamefield;
 localOpts.passwordField = config.passport.local.passwordfield;
 localOpts.session = config.passport.local.session;
 localOpts.passReqToCallback = config.passport.local.passreqtocallback;
-log.info({mod: 'passport'}, 'Setting Up Local Strategy Passport ' + localOpts.passReqToCallback);
 
 const localLoginStrategy = new LocalStrategy(localOpts, function(username, password, next) {
-    log.trace({mod : 'passport'}, `LocalStrategy Local-Login callback for User: ${username} Passwd:${password}`);
-    UserProfile.findOne({'username': username}, function(err, user) {
-	log.trace({mod: 'passport'}, `Found User: ${user}`); 
+    log.trace({mod : 'passport'}, `LocalStrategy Local-Login callback for User: ${username}`);
+    UserProfile.findOne({'local.username': username}, function(err, user) {
+	log.trace({mod: 'passport'}, `Found User: ${user.local.username}`); 
 	// if error return to middleware
-	if(err) return next(err);
+	if(err) {
+	    log.debug({mod : 'passport'}, `Error: ${err.message}`); 
+	    return next(err);
+	}
 	// if no user indicate false to local strategy
-	if(!user) return next(null, false);
+	if(!user) {
+	    log.debug({mod : 'passport'}, `Error: No user found`); 
+	    return next(null, false);
+	}
 	// A matched user
 	user.comparePassword(password, function(err, isMatch) {
 	    if(err) {
+		log.debug({mod : 'passport'}, `Error: ${err.message}`);
 		return next(err);
 	    }
 	    if(isMatch) {
+		log.info({mod : 'passport'}, `User: ${user.local.username} logged in`);
 		return next(null, user);
 	    } else {
-		return next(null, false, { error: 'Your login details could not be verified'});
+		log.debug({mod : 'passport'}, 'Error: Login password details not verified');		
+		return 	next(null, false, { error: 'Your login details could not be verified'});
 	    }
 	});
     });	      
 });
 
 const localRegisterStrategy = new LocalStrategy(localOpts, (username, password, next) => {
-    log.trace(`LocalStrategy Register for User: ${username} Password: ${password}`);
+    log.trace({mod : 'passport'}, `LocalStrategy Register for User: ${username}`);
     process.nextTick(() => {
 	UserProfile.findOne({'local.username' : username}, (err, user) => {
 	    // if error return to middleware
 	    if(err) {
-		log.debug(`Error: ${err.message}`);
+		log.debug({mod : 'passport'}, `Error: ${err.message}`);
 		return next(err);
 	    }
 	    // if user already exists return false to middleware
 	    if(user) {
-		log.debug(`User ${username} exists in datastore`);
+		log.debug({mod : 'passport'}, `User ${username} exists in datastore`);
 		return next(null, false);
 	    }
 	    // New User
 	    var newUser = new UserProfile();
-	    newUser.local.username = username
-	    newUser.local.password = UserProfile.hashPassword(password);
+	    newUser.local.username = username;
+	    newUser.hashPassword(password);
+	    newUser.createToken();
 	    newUser.save(newUser, (err) => {
 		if(err) {
-		    log.debug(`Error saving user: ${err.message}`);
+		    log.debug({mod : 'passport'}, `Error saving user: ${err.message}`);
 		    return next(err);
 		}
-		log.info(`Creating new user ${username}`);
+		log.info({mod : 'passport'}, `Created new user ${username}`);
 		// create token
-
-		next(null, newUser);
+		return next(null, newUser);
 	    });
 	});
     });
 });
 
-
-
-/*
+// Token Strategy
 const tokenOpts = {};
 tokenOpts.jwtFromRequest = ExtractJwt.fromAuthHeader();
 tokenOpts.secretOrKey = config.passport.token.secretorkey;
@@ -81,23 +87,22 @@ tokenOpts.audience = config.passport.token.audience;
 tokenOpts.passReqToCallback = config.passport.token.passreqtocallback;
 
 const tokenStrategy = new JwtStrategy(tokenOpts, function(payload, next) {
-    log.trace('JwtStrategy callback for payload ' + payload);
-    // next();
-    UserProfile.findOne({'username': payload.user.username}, function(err, user) {
+    log.trace(`JwtStrategy callback for payload ${payload}`);
+    UserProfile.findOne({'username': payload.user}, function(err, user) {
 	if (err) {
-	    log.debug('Error %s', err.message);
+	    log.debug({mod : 'passport'}, `Error ${err.message}`);
 	    return next(err);
 	}
 	if (user) {
+	    log.info({mod : 'passport'}, `Identified Token for User ${user.local.username}`);
 	    next(null, user);
 	} else {
+	    log.debug({mod : 'passport'}, `Error: No User for token presented}`);
 	    next(null, false);
-	    // or you could create a new account
 	}
     });
 });
-*/
-//passport.use('token', tokenStrategy);
 
+passport.use('jwt', tokenStrategy);
 passport.use('local-login', localLoginStrategy);
 passport.use('local-register', localRegisterStrategy);
