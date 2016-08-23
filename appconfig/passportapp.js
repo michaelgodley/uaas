@@ -79,26 +79,44 @@ const localRegisterStrategy = new LocalStrategy(localOpts, (username, password, 
 });
 
 // Token Strategy
+var fromCookie = () => {
+    return function(req) {
+	var token = null;
+	if (req && req.cookies) {
+	    token = req.cookies['jwt'];
+	}
+	return token;
+    }
+};
+
+const extractors = [
+    ExtractJwt.fromAuthHeader(),
+    ExtractJwt.fromUrlQueryParameter('auth_token'),
+    ExtractJwt.fromHeader('x-auth-token'),
+    fromCookie(),
+    ExtractJwt.fromBodyField('auth_token')
+];
+
 const tokenOpts = {};
-tokenOpts.jwtFromRequest = ExtractJwt.fromAuthHeader();
+tokenOpts.jwtFromRequest = ExtractJwt.fromExtractors(extractors);
 tokenOpts.secretOrKey = config.passport.token.secretorkey;
 tokenOpts.issuer = config.passport.token.issuer;
 tokenOpts.audience = config.passport.token.audience;
 tokenOpts.passReqToCallback = config.passport.token.passreqtocallback;
 
 const tokenStrategy = new JwtStrategy(tokenOpts, function(payload, next) {
-    log.trace(`JwtStrategy callback for payload ${payload}`);
-    UserProfile.findOne({'username': payload.user}, function(err, user) {
+    log.trace(`JwtStrategy callback for payload ${payload.user}`);
+    UserProfile.findOne({'local.username': payload.user}, function(err, user) {
 	if (err) {
 	    log.debug({mod : 'passport'}, `Error ${err.message}`);
 	    return next(err);
 	}
 	if (user) {
 	    log.info({mod : 'passport'}, `Identified Token for User ${user.local.username}`);
-	    next(null, user);
+	    next(null, user.accessToken);
 	} else {
-	    log.debug({mod : 'passport'}, `Error: No User for token presented}`);
-	    next(null, false);
+	    log.debug({mod : 'passport'}, `Error: No User for token presented`);
+	    return next(null, false);
 	}
     });
 });

@@ -22,6 +22,8 @@ module.exports = function(db) {
 	});
     app.use(reqLogger);
 
+    app.use(require('express-status-monitor')({path: '/v1/status'}));
+    
     // Security
     app.use(helmet());
     

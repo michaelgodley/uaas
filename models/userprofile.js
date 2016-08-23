@@ -75,7 +75,7 @@ UserProfileSchema.methods.createToken = function() {
 				 'lazydog',
 				 {
 				     algorithm: 'HS256' ,
-				     expiresIn: 5,
+				     expiresIn: 86400,
 				     issuer: 'example.com',
 				     audience: 'example.com'
 				 }

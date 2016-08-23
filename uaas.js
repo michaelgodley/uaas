@@ -21,7 +21,8 @@ const router =  require('./routes')(app);
 // Error Handling Middleware
 app.use((err, req, res, next) => {
     log.trace({mod: 'expressapp'}, `Error: ${err}`);
-    next();
+    res.status(422).json({Error: err.message, status: 500});
+    //    next();
 });
 
 app.listen(config.express.server.http.port, function(){

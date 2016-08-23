@@ -1,7 +1,7 @@
 {
     "log" : {
 	"logname" : "serverapp",
-	"src" : false,
+	"src" : true,
 	"stream" : {
 	    "level": "trace"
 	},

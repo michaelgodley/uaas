@@ -12,7 +12,8 @@ nconf.file('log', './env/log.json');
 nconf.file('db', './env/db.json');
 nconf.file('express', './env/expressapp.json');
 nconf.file('passport', './env/passportapp.json');
-
+nconf.file('mailgun', './env/mailgun.json');
+	   
 // Hard defaults
 nconf.defaults({ log :
 		 {
@@ -81,10 +82,13 @@ nconf.defaults({ log :
 			 audience : 'example.com',
 			 passreqtocallback : false
 		     }
+		 },
+		 mailgun : {
+		     apikey: '123456',
+		     domain: 'example.com'
 		 }
-		 
 	       });
-
+	   
 nconf.set('log:rotatingfile:path', `./logs/${nconf.get('log:logname')}.log`);
 
 // logging
@@ -143,6 +147,8 @@ config.passport.token.secretorkey = nconf.get('passport:token:secretorkey');
 config.passport.token.issuer = nconf.get('passport:token:issuer');
 config.passport.token.audience = nconf.get('passport:token:audience');
 config.passport.token.passreqtocallback = nconf.get('passport:token:passreqtocallback');
-
-
+// mailgun
+config.mailgun = {};
+config.mailgun.apikey = nconf.get('mailgun:apikey');	   
+config.mailgun.domain = nconf.get('mailgun:domain');	   
 
