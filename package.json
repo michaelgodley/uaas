@@ -11,6 +11,7 @@
   "private": true,
   "preferGlobal": true,
   "dependencies": {
+    "acl": "^0.4.9",
     "bcryptjs": "^2.3.0",
     "body-parser": "^1.15.2",
     "bunyan": "^1.8.1",
@@ -36,7 +37,9 @@
     "passport-twitter": "^1.0.4",
     "serve-favicon": "^2.3.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "html-webpack-plugin": "^2.22.0"
+  },
   "bin": {
     "command": "echo ./bin/command"
   },

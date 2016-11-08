@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const log = require('./logger');
 
 class DBConnection {
+    
     constructor(name = 'app', host = 'localhost', port = 27017, protocol = 'mongodb') {
 	this.dBProtocol = protocol;
 	this.dBHost = host;
@@ -17,7 +18,7 @@ class DBConnection {
 	    }
 	});
     }
-    
+
     get db() {
 	return this.dB;
     }

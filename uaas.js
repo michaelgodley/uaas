@@ -9,6 +9,10 @@ const passportConfig = require('./appconfig/passportapp');
 // DB setup
 let db = new DB(config.db.name);
 
+db.db.connection.on('connected', (err) => {
+    let acl = require('./controllers/aclcontroller');
+});
+
 // Express Setup
 const app = require('./appconfig/expressapp')(db.db);
 
